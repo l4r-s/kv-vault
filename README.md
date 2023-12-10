@@ -31,43 +31,38 @@ KV-Vault stores data as files on disk. You can specify the path where data shoul
 ## PUT Data
 
 Write data to the server using PUT requests. You can either provide the data inline or upload a file.
+The `created` key will indicate if a key was created (did not exist before) or overwritten.
 
 ### Inline Data
 
 ```bash
-curl http://localhost:8000/path/to/my/folder/test_2 -XPUT -d 'Super Content!' -i
+curl http://localhost:8000/path/to/my/folder/test_2 -XPUT -d 'Super Content!'
 ```
 
 Response:
 
 ```json
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 20:08:07 GMT
-server: uvicorn
-content-length: 51
-content-type: application/json
-
-{"created": false, "size": 20, "size_human": "20 Bytes"}
+{
+  "created": false,
+  "size": 20,
+  "size_human": "20 Bytes"
+}
 ```
 
 ### Upload a File
 
 ```bash
-curl -s -X PUT --upload-file picture.png http://localhost:8000/path/to/my/folder/picture.png -i
+curl -s -X PUT --upload-file file.txt http://localhost:8000/path/to/my/folder/file.txt
 ```
 
 Response:
 
 ```json
-HTTP/1.1 100 Continue
-
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 20:05:20 GMT
-server: uvicorn
-content-length: 53
-content-type: application/json
-
-{"created": true, "size": 5492528, "size_human": "5.5 MB"}
+{
+  "created": true,
+  "size": 364,
+  "size_human": "364 Bytes"
+}
 ```
 
 ## Search
@@ -75,37 +70,34 @@ content-type: application/json
 Given a path (without a key/file) will return a list of all keys:
 
 ```bash
-curl http://localhost:8000/path/to/my/folder -i
+curl http://localhost:8000/path/to/my/folder
 ```
 
 Response:
 
 ```json
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 21:58:45 GMT
-server: uvicorn
-content-length: 33
-content-type: application/json
-
-{"keys":["picture.png","test_2"]}
+{
+  "keys": [
+    "picture.png",
+    "test_2"
+  ]
+}
 ```
 
 If a `prefix` query parameter is present in the request the `keys` list will be filtered with the prefix. In the following example only `keys` that start with `test_` will be returned.
 
 ```bash
-curl http://localhost:8000/path/to/my/folder?prefix=test_ -i
+curl http://localhost:8000/path/to/my/folder?prefix=test_
 ```
 
 Response:
 
 ```json
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 22:02:19 GMT
-server: uvicorn
-content-length: 19
-content-type: application/json
-
-{"keys":["test_2"]}
+{
+  "keys": [
+    "test_2"
+  ]
+}
 ```
 
 ## GET Data
@@ -116,58 +108,56 @@ Retrieve data from the server with optional parameters for different output form
 Retrieve data with metadata.
 
 ```bash
-curl http://localhost:8000/path/to/my/folder/test_2 -i
+curl http://localhost:8000/path/to/my/folder/test_2
 ```
 
 Response:
 
 ```json
-Copy code
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 20:08:30 GMT
-server: uvicorn
-content-length: 103
-content-type: application/json
-
-{"size": 20, "size_human": "20 Bytes", "timestamp": "2023-12-10T20:08:08.245010", "content": "Super Content!"}
+{
+  "size": 20,
+  "size_human": "20 Bytes",
+  "timestamp": "2023-12-10T20:08:08.245010",
+  "content": "Super Content!"
+}
 ```
 
 ### Metadata and Base64 Encoding
 Retrieve data with metadata and base64 encoding.
 
 ```bash
-curl http://localhost:8000/path/to/my/folder/test_2?b64=true -i
+curl http://localhost:8000/path/to/my/folder/test_2?b64=true
 ```
 
 Response:
 
 ```json
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 20:08:47 GMT
-server: uvicorn
-content-length: 109
-content-type: application/json
-
-{"size": 20, "size_human": "20 Bytes", "timestamp": "2023-12-10T20:08:08.245010", "content": "U3VwZXIgQ29udGVudCE="}
+{
+  "size": 20,
+  "size_human": "20 Bytes",
+  "timestamp": "2023-12-10T20:08:08.245010",
+  "content": "U3VwZXIgQ29udGVudCE="
+}
 ```
-`
+
 ### Plain Data
 Retrieve data as plain text.
 
 ```bash
-curl http://localhost:8000/path/to/my/folder/test_2?plain=true -i
+curl http://localhost:8000/path/to/my/folder/file.txt?plain=true
 ```
 
 Response:
 
 ```plaintext
-HTTP/1.1 200 OK
-date: Sun, 10 Dec 2023 20:09:06 GMT
-server: uvicorn
-content-length: 14
-content-type: text/plain; charset=utf-8
-
-Super Content!
+  Upload Test file
+     *******
+   **       **
+ **   O   O   **
+ *               *
+ **  \     /  **
+   **  ****  **
+     *******
 ```
 
 ## Development
