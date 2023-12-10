@@ -35,7 +35,7 @@ Write data to the server using PUT requests. You can either provide the data inl
 ### Inline Data
 
 ```bash
-curl http://localhost:8000/path/to/my/file/test_2 -XPUT -d 'Super Content!' -i
+curl http://localhost:8000/path/to/my/folder/test_2 -XPUT -d 'Super Content!' -i
 ```
 
 Response:
@@ -53,7 +53,7 @@ content-type: application/json
 ### Upload a File
 
 ```bash
-curl -s -X PUT --upload-file picture.png http://localhost:8000/path/to/my/file/picture.png -i
+curl -s -X PUT --upload-file picture.png http://localhost:8000/path/to/my/folder/picture.png -i
 ```
 
 Response:
@@ -70,6 +70,44 @@ content-type: application/json
 {"created": true, "size": 5492528, "size_human": "5.5 MB"}
 ```
 
+## Search
+
+Given a path (without a key/file) will return a list of all keys:
+
+```bash
+curl http://localhost:8000/path/to/my/folder -i
+```
+
+Response:
+
+```json
+HTTP/1.1 200 OK
+date: Sun, 10 Dec 2023 21:58:45 GMT
+server: uvicorn
+content-length: 33
+content-type: application/json
+
+{"keys":["picture.png","test_2"]}
+```
+
+If a `prefix` query parameter is present in the request the `keys` list will be filtered with the prefix. In the following example only `keys` that start with `test_` will be returned.
+
+```bash
+curl http://localhost:8000/path/to/my/folder?prefix=test_ -i
+```
+
+Response:
+
+```json
+HTTP/1.1 200 OK
+date: Sun, 10 Dec 2023 22:02:19 GMT
+server: uvicorn
+content-length: 19
+content-type: application/json
+
+{"keys":["test_2"]}
+```
+
 ## GET Data
 
 Retrieve data from the server with optional parameters for different output formats.
@@ -78,7 +116,7 @@ Retrieve data from the server with optional parameters for different output form
 Retrieve data with metadata.
 
 ```bash
-curl http://localhost:8000/path/to/my/file/test_2 -i
+curl http://localhost:8000/path/to/my/folder/test_2 -i
 ```
 
 Response:
@@ -98,7 +136,7 @@ content-type: application/json
 Retrieve data with metadata and base64 encoding.
 
 ```bash
-curl http://localhost:8000/path/to/my/file/test_2?b64=true -i
+curl http://localhost:8000/path/to/my/folder/test_2?b64=true -i
 ```
 
 Response:
@@ -117,7 +155,7 @@ content-type: application/json
 Retrieve data as plain text.
 
 ```bash
-curl http://localhost:8000/path/to/my/file/test_2?plain=true -i
+curl http://localhost:8000/path/to/my/folder/test_2?plain=true -i
 ```
 
 Response:
