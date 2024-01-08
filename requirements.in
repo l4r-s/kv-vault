@@ -1,3 +1,5 @@
+# .in is needed for dependabot: https://github.com/dependabot/dependabot-core/issues/6593
+
 annotated-types==0.6.0
 anyio==3.7.1
 certifi==2023.11.17
