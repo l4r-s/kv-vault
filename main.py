@@ -43,7 +43,7 @@ def read_root():
     }
 
 @app.options("/{full_path:path}")
-async def options_handler(list_name: str):
+async def options_handler(full_path: str):
     """
     Handle OPTIONS requests for the specified endpoint.
     """

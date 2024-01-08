@@ -81,5 +81,16 @@ def test_get_plain_data():
     assert response.headers['content-type'] == 'text/plain; charset=utf-8'
     assert response.text == 'Super Content!'
 
+def test_cors_headers_present():
+    url = BASE_URL + '/f1/test_2?plain=true'
+
+    response = requests.options(url)
+
+    assert 'Access-Control-Allow-Origin' in response.headers
+    assert 'Access-Control-Allow-Methods' in response.headers
+    assert 'Access-Control-Allow-Headers' in response.headers
+    assert 'Access-Control-Max-Age' in response.headers
+
+
 if __name__ == '__main__':
     pytest.main()
