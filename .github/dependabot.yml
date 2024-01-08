@@ -4,7 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    package-rules:
-      - package-names: ["*"]
-        group:
-          package-names: ["*"]
+    groups:
+       uvicorn:
+          patterns:
+            - "uvicorn"
+       dependencies:
+          patterns:
+            - "*"
+          exclude-patterns:
+            - "uvicorn"
