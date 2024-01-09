@@ -7,17 +7,24 @@ from datetime import datetime
 from pydantic import BaseModel
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
 
 DATA_PATH=os.environ.get("DATA_PATH", "data/")
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
+@app.middleware("http")
+async def cors_handler(request: Request, call_next):
+    response: Response = await call_next(request)
+    allowed_origins = os.environ.get("CORS_ORIGINS", "*").split(",")
+    allowed_methods = ", ".join(os.environ.get("CORS_METHODS", "GET,PUT,OPTIONS").replace(" ","").split(","))
+    allowed_headers = ", ".join(os.environ.get("CORS_HEADERS", "*").replace(" ","").split(","))
+
+    if allowed_origins[0] == "*" or request.headers.get("Origin") in os.environ.get("CORS_ORIGINS", "*").split(","):
+        response.headers['Access-Control-Allow-Origin'] = request.headers.get("Origin")
+        response.headers['Access-Control-Allow-Methods'] = allowed_methods
+        response.headers['Access-Control-Allow-Headers'] = allowed_headers
+
+    return response
 
 def make_boolean(value):
     true_values = [ "true", "yes", "y", "1", 1 ]

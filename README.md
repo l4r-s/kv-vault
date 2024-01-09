@@ -160,6 +160,40 @@ Response:
      *******
 ```
 
+## CORS headers
+
+To dynamically configure CORS (Cross-Origin Resource Sharing) headers, the following environment variables can be set.
+
+### CORS_ORIGINS
+
+Specifies the origins that are allowed to access the resource. Multiple origins can be separated by commas.
+
+Default Value: "*" (allows all origins)
+
+```
+export CORS_ORIGINS="https://example.com,http://localhost"
+```
+
+### CORS_METHODS
+
+Defines the HTTP methods that are allowed when accessing the resource. Setting this to "GET, OPTIONS" disables uploads trough browsers.
+
+Default Value: "GET, PUT, OPTIONS"
+
+```
+export CORS_METHODS="GET,POST"
+```
+
+### CORS_HEADERS
+
+Indicates which HTTP headers are allowed during the actual request.
+
+Default Value: "*" (allows all headers)
+
+```
+export CORS_HEADERS="X-Custom-Header,Content-Type"
+```
+
 ## Development
 
 To set up a development environment:
