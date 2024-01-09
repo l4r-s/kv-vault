@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        pip install -r requirements.in
 
     - name: Start Uvicorn server
       run: uvicorn main:app --host 0.0.0.0 --port 8000 &
