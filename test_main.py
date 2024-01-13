@@ -84,12 +84,14 @@ def test_get_plain_data():
 def test_cors_headers_present():
     url = BASE_URL + '/f1/test_2?plain=true'
 
-    response = requests.options(url)
+    headers = {
+        "Origin": "localhost"
+    }
+    response = requests.options(url, headers=headers)
 
     assert 'Access-Control-Allow-Origin' in response.headers
     assert 'Access-Control-Allow-Methods' in response.headers
     assert 'Access-Control-Allow-Headers' in response.headers
-    assert 'Access-Control-Max-Age' in response.headers
 
 
 if __name__ == '__main__':

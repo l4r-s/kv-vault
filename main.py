@@ -18,11 +18,13 @@ async def cors_handler(request: Request, call_next):
     allowed_origins = os.environ.get("CORS_ORIGINS", "*").split(",")
     allowed_methods = ", ".join(os.environ.get("CORS_METHODS", "GET,PUT,OPTIONS").replace(" ","").split(","))
     allowed_headers = ", ".join(os.environ.get("CORS_HEADERS", "*").replace(" ","").split(","))
+    request_origin = request.headers.get("Origin")
 
-    if allowed_origins[0] == "*" or request.headers.get("Origin") in os.environ.get("CORS_ORIGINS", "*").split(","):
-        response.headers['Access-Control-Allow-Origin'] = request.headers.get("Origin")
+    if allowed_origins[0] == "*" or request_origin in os.environ.get("CORS_ORIGINS", "*").split(","):
         response.headers['Access-Control-Allow-Methods'] = allowed_methods
         response.headers['Access-Control-Allow-Headers'] = allowed_headers
+        if request_origin:
+            response.headers['Access-Control-Allow-Origin'] = request_origin
 
     return response
 
