@@ -1,25 +1,25 @@
 # .in is needed for dependabot: https://github.com/dependabot/dependabot-core/issues/6593
 
-annotated-types==0.6.0
+annotated-types==0.7.0
 anyio==3.7.1
-certifi==2024.2.2
+certifi==2024.7.4
 charset-normalizer==3.3.2
 click==8.1.7
 exceptiongroup==1.2.1
 fastapi==0.105.0
 h11==0.14.0
-humanize==4.9.0
+humanize==4.10.0
 idna==3.7
 iniconfig==2.0.0
-packaging==24.0
+packaging==24.1
 pluggy==1.5.0
 pydantic==2.5.2
 pydantic_core==2.14.5
-pytest==8.2.0
-requests==2.31.0
+pytest==8.2.2
+requests==2.32.3
 sniffio==1.3.1
 starlette==0.27.0
 tomli==2.0.1
-typing_extensions==4.11.0
-urllib3==2.2.1
+typing_extensions==4.12.2
+urllib3==2.2.2
 uvicorn==0.29.0
